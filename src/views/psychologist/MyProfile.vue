@@ -1,13 +1,16 @@
 <template>
   <AppLayout>
-    <div class="mb-6">
-      <h2 class="text-3xl font-bold">Mi Perfil</h2>
+    <LoadingSpinner v-if="loading" message="Cargando perfil..." />
+
+    <div v-else>
+    <div class="mb-4 md:mb-6 px-1">
+      <h2 class="text-2xl sm:text-3xl font-bold">Mi Perfil</h2>
     </div>
 
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       <!-- Columna izquierda -->
-      <div class="col-span-1 space-y-4">
-        <div class="bg-white rounded-lg shadow p-6 text-center">
+      <div class="lg:col-span-1 space-y-4 order-1">
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 text-center">
           <div
             class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
@@ -15,12 +18,12 @@
           </div>
           <h3 class="text-xl font-semibold">{{ fullName }}</h3>
           <p class="text-gray-500 text-sm mt-1">Psicólogo</p>
-          <p class="text-gray-500 text-sm">{{ profile.email }}</p>
+          <p class="text-gray-500 text-sm break-words min-w-0">{{ profile.user.email }}</p>
 
-          <div class="mt-4 pt-4 border-t text-left space-y-2">
+          <div class="mt-4 pt-4 border-t text-left space-y-2 min-w-0">
             <div class="flex justify-between text-sm">
               <span class="text-gray-500">Cédula</span>
-              <span class="font-semibold">{{ profile.cedula }}</span>
+              <span class="font-semibold">{{ profile.license_number }}</span>
             </div>
             <div class="flex justify-between text-sm">
               <span class="text-gray-500">Estado</span>
@@ -34,30 +37,29 @@
         </div>
 
         <!-- Horarios actuales -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
           <h3 class="text-lg font-semibold mb-3">Horario de Atención</h3>
           <div class="space-y-2">
             <div
               v-for="day in profile.schedule"
               :key="day.key"
-              class="flex justify-between text-sm"
+              class="flex flex-col sm:flex-row justify-between gap-1 text-sm"
             >
-              <span class="text-gray-600">{{ day.label }}</span>
-              <span v-if="day.active" class="font-semibold text-gray-800">
+              <span class="text-gray-600">{{ day}}</span>
+              <span class="font-semibold text-gray-800">
                 {{ day.start }} - {{ day.end }}
               </span>
-              <span v-else class="text-gray-400">No disponible</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Columna derecha -->
-      <div class="col-span-2 space-y-6">
+      <div class="lg:col-span-2 space-y-4 md:space-y-6 order-2">
         <!-- Información personal -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold">Información Personal</h3>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold">Información Personal</h3>
             <button
               v-if="!editingPersonal"
               @click="startEditPersonal"
@@ -68,13 +70,13 @@
           </div>
 
           <form v-if="editingPersonal" @submit.prevent="savePersonal">
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <label class="block text-gray-700 font-semibold mb-2"
                   >Nombre(s)</label
                 >
                 <input
-                  v-model="personalForm.nombre"
+                  v-model="personalForm.user.first_name"
                   type="text"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -84,7 +86,7 @@
                   >Apellido Paterno</label
                 >
                 <input
-                  v-model="personalForm.apellido_paterno"
+                  v-model="personalForm.user.last_name"
                   type="text"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -94,7 +96,7 @@
                   >Apellido Materno</label
                 >
                 <input
-                  v-model="personalForm.apellido_materno"
+                  v-model="personalForm.user.middle_name"
                   type="text"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -104,7 +106,7 @@
                   >Teléfono</label
                 >
                 <input
-                  v-model="personalForm.telefono"
+                  v-model="personalForm.user.phone"
                   type="tel"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -118,7 +120,7 @@
               Información actualizada correctamente.
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-3">
               <button
                 type="button"
                 @click="cancelPersonal"
@@ -136,38 +138,38 @@
             </div>
           </form>
 
-          <div v-else class="grid grid-cols-2 gap-4 text-sm">
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div>
               <p class="text-gray-500">Nombre(s)</p>
-              <p class="font-semibold mt-1">{{ profile.nombre }}</p>
+              <p class="font-semibold mt-1">{{ profile.user.first_name }}</p>
             </div>
             <div>
               <p class="text-gray-500">Apellido Paterno</p>
-              <p class="font-semibold mt-1">{{ profile.apellido_paterno }}</p>
+              <p class="font-semibold mt-1">{{ profile.user.last_name }}</p>
             </div>
             <div>
               <p class="text-gray-500">Apellido Materno</p>
-              <p class="font-semibold mt-1">{{ profile.apellido_materno }}</p>
+              <p class="font-semibold mt-1">{{ profile.user.middle_name }}</p>
             </div>
             <div>
               <p class="text-gray-500">Teléfono</p>
-              <p class="font-semibold mt-1">{{ profile.telefono }}</p>
+              <p class="font-semibold mt-1">{{ profile.user.phone }}</p>
             </div>
             <div>
               <p class="text-gray-500">Email</p>
-              <p class="font-semibold mt-1">{{ profile.email }}</p>
+              <p class="font-semibold mt-1">{{ profile.user.email }}</p>
             </div>
             <div>
               <p class="text-gray-500">Cédula Profesional</p>
-              <p class="font-semibold mt-1">{{ profile.cedula }}</p>
+              <p class="font-semibold mt-1">{{ profile.license_number }}</p>
             </div>
           </div>
         </div>
 
         <!-- Editar horarios -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold">Horarios de Atención</h3>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold">Horarios de Atención</h3>
             <button
               v-if="!editingSchedule"
               @click="startEditSchedule"
@@ -182,23 +184,27 @@
               <div
                 v-for="day in scheduleForm"
                 :key="day.key"
-                class="flex items-center gap-4"
+                class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-2 sm:p-0 rounded-lg sm:rounded-none bg-gray-50/50 sm:bg-transparent"
               >
-                <input type="checkbox" v-model="day.active" class="w-5 h-5" />
-                <label class="w-24 font-semibold">{{ day.label }}</label>
-                <input
-                  type="time"
-                  v-model="day.start"
-                  :disabled="!day.active"
-                  class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
-                />
-                <span class="text-gray-600">a</span>
-                <input
-                  type="time"
-                  v-model="day.end"
-                  :disabled="!day.active"
-                  class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
-                />
+                <div class="flex items-center gap-2">
+                  <input type="checkbox" v-model="day.active" class="w-5 h-5 shrink-0" />
+                  <label class="min-w-[5rem] font-semibold">{{ day.label }}</label>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <input
+                    type="time"
+                    v-model="day.start"
+                    :disabled="!day.active"
+                    class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
+                  />
+                  <span class="text-gray-600 shrink-0">a</span>
+                  <input
+                    type="time"
+                    v-model="day.end"
+                    :disabled="!day.active"
+                    class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
+                  />
+                </div>
               </div>
             </div>
 
@@ -209,7 +215,7 @@
               Horarios actualizados correctamente.
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-3">
               <button
                 type="button"
                 @click="cancelSchedule"
@@ -229,9 +235,9 @@
         </div>
 
         <!-- Cambiar contraseña -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold">Cambiar Contraseña</h3>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold">Cambiar Contraseña</h3>
             <button
               v-if="!editingPassword"
               @click="editingPassword = true"
@@ -291,7 +297,7 @@
               Contraseña actualizada correctamente.
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-3">
               <button
                 type="button"
                 @click="cancelPassword"
@@ -314,6 +320,7 @@
             para actualizarla.
           </div>
         </div>
+        </div>
       </div>
     </div>
   </AppLayout>
@@ -322,87 +329,61 @@
 <script setup>
 import { ref, computed } from "vue";
 import AppLayout from "@/layouts/AppLayout.vue";
+import { useAuthStore } from "@/stores/auth";
+import { usePsychologistsStore } from "@/stores/psychologists";
+import LoadingSpinner from "@/components/ui/LoadingSpinner.vue";
 
-const profile = ref({
-  nombre: "María",
-  apellido_paterno: "López",
-  apellido_materno: "Hernández",
-  email: "maria.lopez@ipn.mx",
-  telefono: "55-9876-5432",
-  cedula: "7654321",
-  schedule: [
-    {
-      key: "lunes",
-      label: "Lunes",
-      active: true,
-      start: "09:00",
-      end: "17:00",
-    },
-    {
-      key: "martes",
-      label: "Martes",
-      active: true,
-      start: "09:00",
-      end: "17:00",
-    },
-    {
-      key: "miercoles",
-      label: "Miércoles",
-      active: true,
-      start: "09:00",
-      end: "17:00",
-    },
-    {
-      key: "jueves",
-      label: "Jueves",
-      active: true,
-      start: "09:00",
-      end: "17:00",
-    },
-    {
-      key: "viernes",
-      label: "Viernes",
-      active: false,
-      start: "09:00",
-      end: "17:00",
-    },
-  ],
-});
-
+const auth = useAuthStore();
+const psychologists = usePsychologistsStore();
+// Mock - reemplazar con llamada a API
+const profile = computed(() => auth.profile);
+const loading = ref(false);
+const error = ref("");
 const fullName = computed(
   () =>
-    `${profile.value.nombre} ${profile.value.apellido_paterno} ${profile.value.apellido_materno}`,
+    `${profile.value.user.first_name} ${profile.value.user.last_name} ${profile.value.user.middle_name}`,
 );
+
 const initials = computed(
-  () => `${profile.value.nombre[0]}${profile.value.apellido_paterno[0]}`,
+  () => `${profile.value.user.first_name[0]}${profile.value.user.last_name[0]}`,
 );
 
 // --- Personal ---
 const editingPersonal = ref(false);
 const savingPersonal = ref(false);
 const personalSuccess = ref(false);
-const personalForm = ref({});
+const personalForm = ref(
+  JSON.parse(JSON.stringify(profile.value)),
+);
 
 function startEditPersonal() {
-  personalForm.value = { ...profile.value };
+  personalForm.value = JSON.parse(JSON.stringify(profile.value));
   editingPersonal.value = true;
 }
+
 function cancelPersonal() {
   editingPersonal.value = false;
   personalSuccess.value = false;
 }
 async function savePersonal() {
   savingPersonal.value = true;
+  loading.value = true;
+  error.value = "";
   try {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    Object.assign(profile.value, personalForm.value);
+    const updatedProfile = await psychologists.updatePsychologist(
+      profile.value.id,
+      personalForm.value,
+    );
+    auth.profile = updatedProfile;
+    localStorage.setItem("profile", JSON.stringify(updatedProfile));
     personalSuccess.value = true;
-    setTimeout(() => {
-      editingPersonal.value = false;
-      personalSuccess.value = false;
-    }, 2000);
-  } finally {
+  } catch (err) {
+    console.error(err);
+    error.value = err.response?.data?.detail || "Error al actualizar el perfil.";
+  }
+  finally {
     savingPersonal.value = false;
+    loading.value = false;
   }
 }
 

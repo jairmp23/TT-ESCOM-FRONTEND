@@ -40,7 +40,7 @@ const adminLinks = [
 ];
 
 const sidebarLinks = computed(() => {
-  const role = auth.user?.role;
+  const role = auth.profile?.user?.role_name;
   if (role === "student") return studentLinks;
   if (role === "psychologist") return psychologistLinks;
   if (role === "admin") return adminLinks;

@@ -1,13 +1,13 @@
 <template>
   <AppLayout>
-    <div class="mb-6">
-      <h2 class="text-3xl font-bold">Mi Perfil</h2>
+    <div class="mb-4 md:mb-6 px-1">
+      <h2 class="text-2xl sm:text-3xl font-bold">Mi Perfil</h2>
     </div>
 
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       <!-- Columna izquierda -->
-      <div class="col-span-1">
-        <div class="bg-white rounded-lg shadow p-6 text-center">
+      <div class="lg:col-span-1 order-1">
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 text-center">
           <div
             class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
@@ -15,9 +15,9 @@
           </div>
           <h3 class="text-xl font-semibold">{{ fullName }}</h3>
           <p class="text-gray-500 text-sm mt-1">Administrador</p>
-          <p class="text-gray-500 text-sm">{{ profile.email }}</p>
+          <p class="text-gray-500 text-sm break-words min-w-0">{{ profile.email }}</p>
 
-          <div class="mt-4 pt-4 border-t text-left space-y-2">
+          <div class="mt-4 pt-4 border-t text-left space-y-2 min-w-0">
             <div class="flex justify-between text-sm">
               <span class="text-gray-500">Área</span>
               <span class="font-semibold">{{ profile.area }}</span>
@@ -35,11 +35,11 @@
       </div>
 
       <!-- Columna derecha -->
-      <div class="col-span-2 space-y-6">
+      <div class="lg:col-span-2 space-y-4 md:space-y-6 order-2">
         <!-- Información personal -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold">Información Personal</h3>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold">Información Personal</h3>
             <button
               v-if="!editingPersonal"
               @click="startEditPersonal"
@@ -50,7 +50,7 @@
           </div>
 
           <form v-if="editingPersonal" @submit.prevent="savePersonal">
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <label class="block text-gray-700 font-semibold mb-2"
                   >Nombre(s)</label
@@ -110,7 +110,7 @@
               Información actualizada correctamente.
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-3">
               <button
                 type="button"
                 @click="cancelPersonal"
@@ -128,7 +128,7 @@
             </div>
           </form>
 
-          <div v-else class="grid grid-cols-2 gap-4 text-sm">
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div>
               <p class="text-gray-500">Nombre(s)</p>
               <p class="font-semibold mt-1">{{ profile.nombre }}</p>
@@ -157,9 +157,9 @@
         </div>
 
         <!-- Cambiar contraseña -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold">Cambiar Contraseña</h3>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold">Cambiar Contraseña</h3>
             <button
               v-if="!editingPassword"
               @click="editingPassword = true"
@@ -219,7 +219,7 @@
               Contraseña actualizada correctamente.
             </div>
 
-            <div class="flex gap-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-3">
               <button
                 type="button"
                 @click="cancelPassword"

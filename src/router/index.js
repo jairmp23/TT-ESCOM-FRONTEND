@@ -35,7 +35,6 @@ const routes = [
     component: () => import('@/views/student/MyProfile.vue'),
     meta: { role: 'student' },
   },
-  
 
   // Psychologist routes
   {
@@ -104,21 +103,18 @@ const router = createRouter({
 // Navigation guard
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
+  const role = auth.profile?.user?.role_name
 
-  // If route is for guests only and user is logged in
   if (to.meta.guest && auth.isAuthenticated) {
-    const role = auth.user?.role
     return next(`/${role}`)
   }
 
-  // If route requires auth and user is not logged in
   if (to.meta.role && !auth.isAuthenticated) {
     return next('/login')
   }
 
-  // If route requires a specific role and user has a different role
-  if (to.meta.role && auth.user?.role !== to.meta.role) {
-    return next(`/${auth.user?.role}`)
+  if (to.meta.role && role !== to.meta.role) {
+    return next(`/${role}`)
   }
 
   next()

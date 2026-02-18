@@ -1,37 +1,35 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { loginApi } from '@/api/auth'
+import { getMeApi } from '@/api/users'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || null)
-  const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
+  const profile  = ref(JSON.parse(localStorage.getItem('profile') || 'null'))
 
   const isAuthenticated = computed(() => !!token.value)
 
   async function login(email, password) {
-    // Temporal mock - reemplazar con llamada real al backend
-    const mockUsers = {
-      'student@alumno.ipn.mx': { role: 'student', nombre: 'Juan', apellido_paterno: 'Pérez' },
-      'psychologist@ipn.mx': { role: 'psychologist', nombre: 'María', apellido_paterno: 'López' },
-      'admin@ipn.mx': { role: 'admin', nombre: 'Admin', apellido_paterno: 'Principal' },
-    }
-
-    const mockUser = mockUsers[email]
-    if (!mockUser || password !== '12345678') {
-      throw { response: { data: { detail: 'Invalid credentials' } } }
-    }
-
-    token.value = 'mock-token-123'
-    user.value = mockUser
-    localStorage.setItem('token', 'mock-token-123')
-    localStorage.setItem('user', JSON.stringify(mockUser))
+    // 1. Obtener el token
+    const tokenResponse = await loginApi(email, password)
+    const accessToken = tokenResponse.access_token
+  
+    // Guardar token primero para que el interceptor lo use
+    token.value = accessToken
+    localStorage.setItem('token', accessToken)
+  
+    // 2. Con el token ya guardado, obtener los datos del usuario
+    const userResponse = await getMeApi()
+    profile.value = userResponse
+    localStorage.setItem('profile', JSON.stringify(userResponse))
   }
 
   function logout() {
     token.value = null
-    user.value = null
+    profile.value  = null
     localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    localStorage.removeItem('profile')
   }
 
-  return { token, user, isAuthenticated, login, logout }
+  return { token, profile, isAuthenticated, login, logout }
 })

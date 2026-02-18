@@ -78,14 +78,15 @@ async function handleLogin() {
   error.value = "";
   try {
     await auth.login(form.value.email, form.value.password);
-    // Redirect based on role
-    const role = auth.user?.role;
+    const role = auth.profile?.user?.role_name;
+    console.log(auth.profile);
+    console.log(role);
     if (role === "student") router.push("/student");
     else if (role === "psychologist") router.push("/psychologist");
     else if (role === "admin") router.push("/admin");
   } catch (err) {
     error.value =
-      err.response?.data?.detail || "Invalid credentials. Please try again.";
+      err.response?.data?.detail || "Credenciales inválidas. Intenta de nuevo.";
   } finally {
     loading.value = false;
   }

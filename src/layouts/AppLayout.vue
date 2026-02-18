@@ -34,13 +34,14 @@ const psychologistLinks = [
 
 const adminLinks = [
   { label: "Dashboard", to: "/admin" },
-  { label: "Gestión de Usuarios", to: "/admin/users" },
+  { label: "Gestión de Alumnos", to: "/admin/students" },
+  { label: "Gestión de Psicólogos", to: "/admin/psychologists" },
   { label: "Crear Psicólogo", to: "/admin/create-psychologist" },
   { label: "Mi Perfil", to: "/admin/profile" },
 ];
 
 const sidebarLinks = computed(() => {
-  const role = auth.user?.role;
+  const role = auth.profile?.user?.role_name;
   if (role === "student") return studentLinks;
   if (role === "psychologist") return psychologistLinks;
   if (role === "admin") return adminLinks;

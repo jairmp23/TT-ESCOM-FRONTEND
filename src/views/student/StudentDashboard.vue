@@ -26,25 +26,16 @@
     <div class="bg-white rounded-lg shadow p-6 mb-8">
       <h3 class="text-xl font-semibold mb-4">Próximas Citas</h3>
 
-      <div
-        v-if="upcomingAppointments.length === 0"
-        class="text-center py-8 text-gray-500"
-      >
+      <div v-if="upcomingAppointments.length === 0" class="text-center py-8 text-gray-500">
         No upcoming appointments.
-        <RouterLink
-          to="/student/schedule"
-          class="text-blue-600 hover:underline ml-1"
-        >
+        <RouterLink to="/student/schedule" class="text-blue-600 hover:underline ml-1">
           Agenda una ahora.
         </RouterLink>
       </div>
 
       <div v-else class="space-y-4">
-        <div
-          v-for="appointment in upcomingAppointments"
-          :key="appointment.id"
-          class="border border-gray-200 rounded-lg p-4"
-        >
+        <div v-for="appointment in upcomingAppointments" :key="appointment.id"
+          class="border border-gray-200 rounded-lg p-4">
           <div class="flex justify-between items-start mb-2">
             <div>
               <h4 class="font-semibold text-lg">
@@ -63,10 +54,8 @@
 
     <!-- Schedule button -->
     <div class="text-center">
-      <RouterLink
-        to="/student/schedule"
-        class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold text-lg"
-      >
+      <RouterLink to="/student/schedule"
+        class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold text-lg">
         Agendar Nueva Cita
       </RouterLink>
     </div>

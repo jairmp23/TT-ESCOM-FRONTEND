@@ -1,10 +1,7 @@
 <template>
   <AppLayout>
     <div class="mb-6">
-      <RouterLink
-        :to="`/psychologist/records/${recordId}`"
-        class="text-blue-600 hover:text-blue-800 mb-2 inline-block"
-      >
+      <RouterLink :to="`/psychologist/records/${recordId}`" class="text-blue-600 hover:text-blue-800 mb-2 inline-block">
         ← Volver al Expediente
       </RouterLink>
       <h2 class="text-3xl font-bold">Nueva Nota Clínica</h2>
@@ -40,33 +37,20 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-gray-700 font-semibold mb-2"
-                >Fecha de la Sesión *</label
-              >
-              <input
-                v-model="form.date"
-                type="date"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <label class="block text-gray-700 font-semibold mb-2">Fecha de la Sesión *</label>
+              <input v-model="form.date" type="date"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
               <p v-if="errors.date" class="text-red-600 text-sm mt-1">
                 {{ errors.date }}
               </p>
             </div>
 
             <div>
-              <label class="block text-gray-700 font-semibold mb-2"
-                >Cita Asociada</label
-              >
-              <select
-                v-model="form.appointmentId"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+              <label class="block text-gray-700 font-semibold mb-2">Cita Asociada</label>
+              <select v-model="form.appointmentId"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Ninguna</option>
-                <option
-                  v-for="appointment in appointments"
-                  :key="appointment.id"
-                  :value="appointment.id"
-                >
+                <option v-for="appointment in appointments" :key="appointment.id" :value="appointment.id">
                   {{ appointment.label }}
                 </option>
               </select>
@@ -79,13 +63,10 @@
           <label class="block text-gray-700 font-semibold mb-2">
             Observaciones y Evolución de la Sesión *
           </label>
-          <textarea
-            v-model="form.observations"
-            rows="10"
+          <textarea v-model="form.observations" rows="10"
             placeholder="Describe el desarrollo de la sesión, observaciones del paciente, técnicas utilizadas, evolución..."
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            :class="errors.observations ? 'border-red-500' : 'border-gray-300'"
-          ></textarea>
+            :class="errors.observations ? 'border-red-500' : 'border-gray-300'"></textarea>
           <p v-if="errors.observations" class="text-red-600 text-sm mt-1">
             {{ errors.observations }}
           </p>
@@ -102,34 +83,23 @@
         </div>
 
         <!-- Error general -->
-        <div
-          v-if="submitError"
-          class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"
-        >
+        <div v-if="submitError" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
           {{ submitError }}
         </div>
 
         <!-- Success -->
-        <div
-          v-if="submitSuccess"
-          class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm"
-        >
+        <div v-if="submitSuccess" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
           ¡Nota clínica guardada exitosamente! Redirigiendo...
         </div>
 
         <!-- Botones -->
         <div class="flex gap-4 pt-6 border-t">
-          <RouterLink
-            :to="`/psychologist/records/${recordId}`"
-            class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold"
-          >
+          <RouterLink :to="`/psychologist/records/${recordId}`"
+            class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">
             Cancelar
           </RouterLink>
-          <button
-            type="submit"
-            :disabled="loading"
-            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50"
-          >
+          <button type="submit" :disabled="loading"
+            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50">
             {{ loading ? "Guardando..." : "Guardar Nota Clínica" }}
           </button>
         </div>

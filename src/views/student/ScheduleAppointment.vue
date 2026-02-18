@@ -6,28 +6,16 @@
       <form @submit.prevent="handleSubmit">
         <!-- Seleccionar Psicólogo -->
         <div class="mb-6">
-          <label class="block text-gray-700 font-semibold mb-3"
-            >Seleccionar Psicólogo</label
-          >
+          <label class="block text-gray-700 font-semibold mb-3">Seleccionar Psicólogo</label>
           <div class="space-y-3">
-            <div
-              v-for="psychologist in psychologists"
-              :key="psychologist.id"
+            <div v-for="psychologist in psychologists" :key="psychologist.id"
               @click="form.psychologistId = psychologist.id"
-              class="border rounded-lg p-4 cursor-pointer transition-colors"
-              :class="
-                form.psychologistId === psychologist.id
+              class="border rounded-lg p-4 cursor-pointer transition-colors" :class="form.psychologistId === psychologist.id
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-300 hover:border-blue-400'
-              "
-            >
+                ">
               <div class="flex items-start gap-3">
-                <input
-                  type="radio"
-                  :value="psychologist.id"
-                  v-model="form.psychologistId"
-                  class="mt-1"
-                />
+                <input type="radio" :value="psychologist.id" v-model="form.psychologistId" class="mt-1" />
                 <div class="flex-1">
                   <h4 class="font-semibold text-lg">
                     {{ psychologist.nombre }}
@@ -50,13 +38,8 @@
         <!-- Seleccionar Fecha -->
         <div class="mb-6">
           <label class="block text-gray-700 font-semibold mb-2">Fecha</label>
-          <input
-            v-model="form.date"
-            type="date"
-            :min="minDate"
-            @change="onDateChange"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <input v-model="form.date" type="date" :min="minDate" @change="onDateChange"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <p v-if="errors.date" class="text-red-600 text-sm mt-1">
             {{ errors.date }}
           </p>
@@ -64,38 +47,23 @@
 
         <!-- Seleccionar Hora -->
         <div class="mb-6">
-          <label class="block text-gray-700 font-semibold mb-3"
-            >Horarios Disponibles</label
-          >
+          <label class="block text-gray-700 font-semibold mb-3">Horarios Disponibles</label>
 
-          <div
-            v-if="!form.date || !form.psychologistId"
-            class="text-gray-500 text-sm"
-          >
+          <div v-if="!form.date || !form.psychologistId" class="text-gray-500 text-sm">
             Selecciona un psicólogo y una fecha para ver los horarios
             disponibles.
           </div>
 
-          <div
-            v-else-if="availableSlots.length === 0"
-            class="text-gray-500 text-sm"
-          >
+          <div v-else-if="availableSlots.length === 0" class="text-gray-500 text-sm">
             No hay horarios disponibles para esta fecha.
           </div>
 
           <div v-else class="grid grid-cols-4 gap-3">
-            <button
-              v-for="slot in availableSlots"
-              :key="slot"
-              type="button"
-              @click="form.time = slot"
-              class="px-4 py-2 border rounded-lg transition-colors"
-              :class="
-                form.time === slot
+            <button v-for="slot in availableSlots" :key="slot" type="button" @click="form.time = slot"
+              class="px-4 py-2 border rounded-lg transition-colors" :class="form.time === slot
                   ? 'bg-blue-100 border-blue-500 text-blue-700 font-semibold'
                   : 'border-gray-300 hover:bg-blue-50 hover:border-blue-400'
-              "
-            >
+                ">
               {{ slot }}
             </button>
           </div>
@@ -110,43 +78,28 @@
             Motivo de la Consulta
             <span class="text-gray-400 font-normal">(Opcional)</span>
           </label>
-          <textarea
-            v-model="form.notes"
-            rows="3"
-            placeholder="Describe brevemente el motivo de tu consulta..."
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          ></textarea>
+          <textarea v-model="form.notes" rows="3" placeholder="Describe brevemente el motivo de tu consulta..."
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
         </div>
 
         <!-- Error general -->
-        <div
-          v-if="submitError"
-          class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"
-        >
+        <div v-if="submitError" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
           {{ submitError }}
         </div>
 
         <!-- Success -->
-        <div
-          v-if="submitSuccess"
-          class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm"
-        >
+        <div v-if="submitSuccess" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
           ¡Cita solicitada exitosamente! Redirigiendo a Mis Citas...
         </div>
 
         <!-- Botones -->
         <div class="flex gap-4">
-          <RouterLink
-            to="/student/appointments"
-            class="flex-1 text-center bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 font-semibold"
-          >
+          <RouterLink to="/student/appointments"
+            class="flex-1 text-center bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 font-semibold">
             Cancelar
           </RouterLink>
-          <button
-            type="submit"
-            :disabled="loading"
-            class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50"
-          >
+          <button type="submit" :disabled="loading"
+            class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50">
             {{ loading ? "Enviando..." : "Solicitar Cita" }}
           </button>
         </div>

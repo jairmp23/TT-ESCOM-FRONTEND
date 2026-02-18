@@ -2,22 +2,16 @@
   <AppLayout>
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-3xl font-bold">Expedientes Clínicos</h2>
-      <button
-        @click="showCreateModal = true"
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
-      >
+      <button @click="showCreateModal = true"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold">
         + Crear Expediente
       </button>
     </div>
 
     <!-- Buscador -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
-      <input
-        v-model="search"
-        type="text"
-        placeholder="Buscar por nombre, boleta..."
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+      <input v-model="search" type="text" placeholder="Buscar por nombre, boleta..."
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Tabla -->
@@ -33,11 +27,7 @@
           </tr>
         </thead>
         <tbody class="divide-y">
-          <tr
-            v-for="record in filteredRecords"
-            :key="record.id"
-            class="hover:bg-gray-50"
-          >
+          <tr v-for="record in filteredRecords" :key="record.id" class="hover:bg-gray-50">
             <td class="px-6 py-4">
               <div class="font-semibold">{{ record.student }}</div>
               <div class="text-sm text-gray-600">{{ record.email }}</div>
@@ -45,22 +35,16 @@
             <td class="px-6 py-4 text-gray-700">{{ record.boleta }}</td>
             <td class="px-6 py-4 text-gray-700">{{ record.openedAt }}</td>
             <td class="px-6 py-4">
-              <span
-                class="px-3 py-1 rounded-full text-sm font-semibold"
-                :class="
-                  record.activo
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-800'
-                "
-              >
+              <span class="px-3 py-1 rounded-full text-sm font-semibold" :class="record.activo
+                ? 'bg-green-100 text-green-800'
+                : 'bg-gray-100 text-gray-800'
+                ">
                 {{ record.activo ? "Activo" : "Cerrado" }}
               </span>
             </td>
             <td class="px-6 py-4">
-              <RouterLink
-                :to="`/psychologist/records/${record.id}`"
-                class="text-blue-600 hover:text-blue-800 font-semibold"
-              >
+              <RouterLink :to="`/psychologist/records/${record.id}`"
+                class="text-blue-600 hover:text-blue-800 font-semibold">
                 Ver Detalle
               </RouterLink>
             </td>

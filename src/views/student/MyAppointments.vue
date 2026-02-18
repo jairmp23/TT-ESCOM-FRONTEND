@@ -2,10 +2,8 @@
   <AppLayout>
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-3xl font-bold">My Appointments</h2>
-      <RouterLink
-        to="/student/schedule"
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
-      >
+      <RouterLink to="/student/schedule"
+        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold">
         + New Appointment
       </RouterLink>
     </div>
@@ -13,17 +11,10 @@
     <!-- Filters -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
       <div class="flex gap-4">
-        <button
-          v-for="filter in filters"
-          :key="filter.value"
-          @click="activeFilter = filter.value"
-          :class="
-            activeFilter === filter.value
-              ? 'bg-blue-100 text-blue-700 font-semibold'
-              : 'hover:bg-gray-100 text-gray-600'
-          "
-          class="px-4 py-2 rounded-lg transition-colors"
-        >
+        <button v-for="filter in filters" :key="filter.value" @click="activeFilter = filter.value" :class="activeFilter === filter.value
+            ? 'bg-blue-100 text-blue-700 font-semibold'
+            : 'hover:bg-gray-100 text-gray-600'
+          " class="px-4 py-2 rounded-lg transition-colors">
           {{ filter.label }}
         </button>
       </div>
@@ -31,23 +22,16 @@
 
     <!-- Appointments list -->
     <div class="space-y-4">
-      <div
-        v-if="filteredAppointments.length === 0"
-        class="bg-white rounded-lg shadow p-8 text-center text-gray-500"
-      >
+      <div v-if="filteredAppointments.length === 0" class="bg-white rounded-lg shadow p-8 text-center text-gray-500">
         No se encontraron citas para este filtro.
       </div>
 
-      <div
-        v-for="appointment in filteredAppointments"
-        :key="appointment.id"
-        class="bg-white rounded-lg shadow p-6"
+      <div v-for="appointment in filteredAppointments" :key="appointment.id" class="bg-white rounded-lg shadow p-6"
         :class="{
           'opacity-75':
             appointment.status === 'completed' ||
             appointment.status === 'cancelled',
-        }"
-      >
+        }">
         <div class="flex justify-between items-start mb-4">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
@@ -63,16 +47,12 @@
           </div>
 
           <!-- Cancel button only for pending/confirmed -->
-          <div
-            v-if="
-              appointment.status === 'pending' ||
-              appointment.status === 'confirmed'
-            "
-          >
-            <button
-              @click="cancelAppointment(appointment.id)"
-              class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 font-semibold"
-            >
+          <div v-if="
+            appointment.status === 'pending' ||
+            appointment.status === 'confirmed'
+          ">
+            <button @click="cancelAppointment(appointment.id)"
+              class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 font-semibold">
               Cancel
             </button>
           </div>

@@ -1,24 +1,17 @@
 <template>
   <AppLayout>
     <div class="mb-6">
-      <RouterLink
-        to="/psychologist/records"
-        class="text-blue-600 hover:text-blue-800 mb-2 inline-block"
-      >
+      <RouterLink to="/psychologist/records" class="text-blue-600 hover:text-blue-800 mb-2 inline-block">
         ← Volver a Expedientes
       </RouterLink>
       <div class="flex justify-between items-center">
         <h2 class="text-3xl font-bold">Expediente Clínico</h2>
         <div class="flex gap-3">
-          <RouterLink
-            :to="`/psychologist/records/${record.id}/note`"
-            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
-          >
+          <RouterLink :to="`/psychologist/records/${record.id}/note`"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold">
             + Nueva Nota
           </RouterLink>
-          <button
-            class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 font-semibold"
-          >
+          <button class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 font-semibold">
             Editar Expediente
           </button>
         </div>
@@ -39,9 +32,7 @@
           </div>
         </div>
         <div class="text-right">
-          <span
-            class="px-4 py-2 bg-green-100 text-green-800 rounded-full font-semibold"
-          >
+          <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full font-semibold">
             Expediente Activo
           </span>
           <p class="text-sm text-gray-600 mt-3">
@@ -69,11 +60,7 @@
       </div>
 
       <div v-else class="space-y-4">
-        <div
-          v-for="note in notes"
-          :key="note.id"
-          class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded"
-        >
+        <div v-for="note in notes" :key="note.id" class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
           <div class="flex justify-between items-start mb-2">
             <div>
               <p class="font-semibold text-lg">
@@ -81,10 +68,8 @@
               </p>
               <p class="text-sm text-gray-600">{{ note.psychologist }}</p>
             </div>
-            <RouterLink
-              :to="`/psychologist/records/${record.id}/note`"
-              class="text-blue-600 hover:text-blue-800 font-semibold"
-            >
+            <RouterLink :to="`/psychologist/records/${record.id}/note`"
+              class="text-blue-600 hover:text-blue-800 font-semibold">
               Ver / Editar
             </RouterLink>
           </div>

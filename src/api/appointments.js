@@ -12,3 +12,6 @@ export const registerAppointmentApi = (data) =>
 export const updateAppointmentApi = (id, data) =>
     api.put(`/appointments/${id}`, data).then(response => response.data)
 
+export const getAvailableSlotsApi = (psychologist_id, date) =>
+    api.get(`/appointments/available-slots`, { params: { psychologist_id, date } }).then(response => response.data)
+

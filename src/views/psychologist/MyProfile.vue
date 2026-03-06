@@ -38,7 +38,7 @@
             <div class="space-y-2">
               <div v-for="day in profile.schedule" :key="day.key"
                 class="flex flex-col sm:flex-row justify-between gap-1 text-sm">
-                <span class="text-gray-600">{{ day }}</span>
+                <span class="text-gray-600">{{ day.label }}</span>
                 <span class="font-semibold text-gray-800">
                   {{ day.start }} - {{ day.end }}
                 </span>
@@ -139,7 +139,7 @@
 
             <form v-if="editingSchedule" @submit.prevent="saveSchedule">
               <div class="space-y-3 mb-4">
-                <div v-for="day in scheduleForm" :key="day.key"
+                <div v-for="day in scheduleForm" :key="day.label"
                   class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-2 sm:p-0 rounded-lg sm:rounded-none bg-gray-50/50 sm:bg-transparent">
                   <div class="flex items-center gap-2">
                     <input type="checkbox" v-model="day.active" class="w-5 h-5 shrink-0" />

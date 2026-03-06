@@ -3,8 +3,8 @@ import api from './axios'
 export const getNoteApi = (id) =>
     api.get(`/notes/${id}`).then(response => response.data)
 
-export const listNotesApi = () =>
-    api.get(`/notes/`).then(response => response.data)
+export const listNotesApi = (params = {}) =>
+    api.get(`/notes/`, { params }).then(response => response.data)
 
 export const registerNoteApi = (data) =>
     api.post(`/notes/`, data).then(response => response.data)

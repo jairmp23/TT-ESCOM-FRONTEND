@@ -13,7 +13,8 @@
       <!-- Buscador -->
       <div class="bg-white rounded-lg shadow p-4 mb-6">
         <input v-model="search" type="text" placeholder="Buscar por nombre, cédula, email..."
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          @input="onSearchInput" />
       </div>
 
       <!-- Error -->
@@ -34,7 +35,7 @@
             </tr>
           </thead>
           <tbody class="divide-y">
-            <tr v-for="p in filteredPsychologists" :key="p.id" class="hover:bg-gray-50">
+            <tr v-for="p in psychologists" :key="p.id" class="hover:bg-gray-50">
               <td class="px-6 py-4">
                 <div class="font-semibold">{{ fullName(p.user) }}</div>
                 <div class="text-sm text-gray-500">{{ p.user.email }}</div>
@@ -64,7 +65,7 @@
               </td>
             </tr>
 
-            <tr v-if="filteredPsychologists.length === 0">
+            <tr v-if="psychologists.length === 0">
               <td colspan="5" class="px-6 py-8 text-center text-gray-500">
                 No se encontraron psicólogos.
               </td>
@@ -75,7 +76,7 @@
 
       <!-- Pie de tabla -->
       <div class="flex justify-between items-center mt-6">
-        <span class="text-gray-600">Mostrando {{ filteredPsychologists.length }} de {{ total }} psicólogos</span>
+        <span class="text-gray-600">Mostrando {{ psychologists.length }} de {{ total }} psicólogos</span>
         <div class="flex gap-2">
           <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
             class="px-4 py-2 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">
@@ -97,7 +98,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { usePsychologistsStore } from '@/stores/psychologists'
 import LoadingSpinner from "@/components/ui/LoadingSpinner.vue";
@@ -112,29 +113,21 @@ const currentPage = ref(1)
 const loading = ref(true)
 const error = ref(null)
 
+let searchTimeout = null
+
 const fullName = (user) =>
   [user.first_name, user.middle_name, user.last_name].filter(Boolean).join(' ')
 
 const activeSchedule = (schedule) =>
   Array.isArray(schedule) ? schedule.filter((s) => s.active) : []
 
-const filteredPsychologists = computed(() => {
-  const q = search.value.toLowerCase()
-  if (!q) return psychologists.value
-  return psychologists.value.filter((p) =>
-    fullName(p.user).toLowerCase().includes(q) ||
-    (p.user.email ?? '').toLowerCase().includes(q) ||
-    (p.license_number ?? '').toLowerCase().includes(q)
-  )
-})
-
 async function fetchPsychologists() {
   loading.value = true
   error.value = null
   try {
-    const res = await psychologistsStore.listPsychologists({
-      skip: (currentPage.value - 1) * 20,
-    })
+    const params = { skip: (currentPage.value - 1) * 20 }
+    if (search.value) params.search = search.value
+    const res = await psychologistsStore.listPsychologists(params)
     psychologists.value = res.items
     total.value = res.total
     totalPages.value = res.total_pages
@@ -144,6 +137,14 @@ async function fetchPsychologists() {
   } finally {
     loading.value = false
   }
+}
+
+function onSearchInput() {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1
+    fetchPsychologists()
+  }, 350)
 }
 
 function goToPage(page) {

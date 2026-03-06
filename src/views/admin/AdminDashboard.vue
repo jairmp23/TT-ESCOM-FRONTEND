@@ -1,10 +1,9 @@
 <template>
   <AppLayout>
-    <h2 class="text-3xl font-bold mb-6">Panel de Administración</h2>
-
     <LoadingSpinner v-if="loading" message="Cargando datos..." />
 
     <div v-else>
+      <h2 class="text-3xl font-bold mb-6">Panel de Administración</h2>
       <!-- Estadísticas -->
       <div class="grid grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6">

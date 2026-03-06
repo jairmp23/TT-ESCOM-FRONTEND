@@ -53,13 +53,23 @@ const routes = [
     meta: { role: "psychologist" },
   },
   {
+    path: "/psychologist/records/create",
+    component: () => import("@/views/psychologist/CreateRecord.vue"),
+    meta: { role: "psychologist" },
+  },
+  {
     path: "/psychologist/records/:id",
     component: () => import("@/views/psychologist/RecordDetail.vue"),
     meta: { role: "psychologist" },
   },
   {
     path: "/psychologist/records/:id/note",
-    component: () => import("@/views/psychologist/NewClinicalNote.vue"),
+    component: () => import("@/views/psychologist/ClinicalNote.vue"),
+    meta: { role: "psychologist" },
+  },
+  {
+    path: "/psychologist/records/:id/note/:noteId",
+    component: () => import("@/views/psychologist/ClinicalNote.vue"),
     meta: { role: "psychologist" },
   },
   {

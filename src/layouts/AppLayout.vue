@@ -27,8 +27,8 @@ const studentLinks = [
 
 const psychologistLinks = [
   { label: "Dashboard", to: "/psychologist" },
-  { label: "Agendar Cita", to: "/psychologist/schedule" },
-  { label: "Registros", to: "/psychologist/records" },
+  { label: "Agenda de Citas", to: "/psychologist/schedule" },
+  { label: "Expedientes", to: "/psychologist/records" },
   { label: "Perfil", to: "/psychologist/profile" },
 ];
 
